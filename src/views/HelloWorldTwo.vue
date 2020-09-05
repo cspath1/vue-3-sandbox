@@ -1,6 +1,16 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <h1>Showcases Reactive References via Object References</h1>
+    <!-- Reactive Reference Example -->
+    <h2>Capacity: {{ capacity }}</h2>
+    <button @click="increaseCapacity">Increase Capacity</button>
+    <p>Spaces Left: {{ spacesLeft }} out of {{ capacity }}</p>
+    <h2>Attending</h2>
+    <ul>
+      <li v-for="(name, index) in attending" :key="index">
+        {{ name }}
+      </li>
+    </ul>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
@@ -34,15 +44,44 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {
+  defineComponent,
+
+  computed,
+  reactive,
+  toRefs
+} from 'vue';
+
+// NOTE: This would likely go in it's own dedicated file to
+// allow for reuse throughout the application as needed
+interface Event {
+  capacity: number;
+  attending: Array<string>;
+  spacesLeft: number;
+}
 
 export default defineComponent({
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  setup() {
+    // This essentially encapsulates all of the above into a reactive object.
+    // The main difference here is that the inner values are no longer passed
+    // by reference since the entire object is a reference!
+    const event: Event = reactive({
+      capacity: 4,
+      attending: ["Tim", "Bob", "Joe"],
+      spacesLeft: computed(() => {
+        return event.capacity - event.attending.length
+      })
+    })
+
+    function increaseCapacity() {
+      event.capacity++;
+    }
+
+    return { increaseCapacity, ...toRefs(event) };
   },
+  name: 'HelloWorldTwo',
   created() {
-    document.title = "Hello World OG"
+    document.title = "Hello World Example 2"
   }
 });
 </script>

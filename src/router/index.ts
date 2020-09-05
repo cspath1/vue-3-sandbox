@@ -8,6 +8,21 @@ const routes: Array<RouteRecordRaw> = [
     component: Home
   },
   {
+    path: '/hello-world-one',
+    name: 'HelloWorldOne',
+    component: () => import(/* webpackChunkName: "helloworldone" */ '../views/HelloWorldOne.vue')
+  },
+  {
+    path: '/hello-world-two',
+    name: 'HelloWorldTwo',
+    component: () => import(/* webpackChunkName: "helloworldtwo" */ '../views/HelloWorldTwo.vue')
+  },
+  {
+    path: '/hello-world-refactored',
+    name: 'HelloWorldRefactored',
+    component: () => import(/* webpackChunkName: "helloworldone" */ '../views/HelloWorldRefactored.vue')
+  },
+  {
     path: '/about',
     name: 'About',
     // route level code-splitting

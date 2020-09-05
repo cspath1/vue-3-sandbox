@@ -1,6 +1,18 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <h1>Showcases Reactive References and Computed Properties</h1>
+    <!--    Reactive Reference Example-->
+    <h2>Capacity: {{ capacity }}</h2>
+    <button @click="increaseCapacity">Increase Capacity</button>
+    <!--    Computed Properties Example-->
+    <p>Spaces Left: {{ spacesLeft }} out of {{ capacity }}</p>
+    <h2>Attending</h2>
+    <ul>
+      <li v-for="(name, index) in attending" :key="index">
+        {{ name }}
+      </li>
+    </ul>
+    <hr/>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
@@ -34,15 +46,43 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {
+  defineComponent,
+  ref,
+  computed
+} from 'vue';
 
 export default defineComponent({
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  setup() {
+    // Reactive Reference Example
+    // Ref takes an object and wraps it in a reference
+    // This means that things are now passed by reference
+    // instead of being passed by value! This is especially
+    // useful with primitive data types, since they are inherently
+    // passed by value! Neat!
+    const capacity = ref<number>(3);
+
+    function increaseCapacity() {
+      capacity.value++;
+    }
+
+    // Computed Property Example
+    const attending = ref<Array<string>>(["Tim", "Bob", "Joe"]);
+
+    // Rather than needing to lump specific, computed logic into a
+    // "computed" section, we can now utilize the computed API function
+    // to denote a property as being computed. Note that the return value
+    // of a computed function is a computed ref, keeping in line the
+    // ideology of passing things by reference.
+    const spacesLeft = computed(() => {
+      return capacity.value - attending.value.length;
+    })
+
+    return { capacity, increaseCapacity, attending, spacesLeft };
   },
+  name: 'HelloWorldOne',
   created() {
-    document.title = "Hello World OG"
+    document.title = "Hello World Example 1"
   }
 });
 </script>

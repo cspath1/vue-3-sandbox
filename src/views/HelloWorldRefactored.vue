@@ -1,6 +1,16 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <h1>Showcases Reactive References via Object References</h1>
+    <!-- Reactive Reference Example -->
+    <h2>Capacity: {{ capacity }}</h2>
+    <button @click="increaseCapacity">Increase Capacity</button>
+    <p>Spaces Left: {{ spacesLeft }} out of {{ capacity }}</p>
+    <h2>Attending</h2>
+    <ul>
+      <li v-for="(name, index) in attending" :key="index">
+        {{ name }}
+      </li>
+    </ul>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
@@ -35,15 +45,18 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useEventSpace } from "@/use/event-space";
 
 export default defineComponent({
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  // Fun Fact: The Setup method is invoked right after beforeCreate() and right before created()
+  // This means that any code you would normally place in either of those lifecycle methods can just
+  // go here! Example: API calls OR store invocations
+  setup() {
+    document.title = "Hello World Refactored";
+
+    return useEventSpace()
   },
-  created() {
-    document.title = "Hello World OG"
-  }
+  name: 'HelloWorldTwo'
 });
 </script>
 
